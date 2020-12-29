@@ -10,7 +10,7 @@ namespace EditorExtension
 	{
 		private static List<GUIStyle> m_GUIStyles = null;
 
-		[MenuItem("EditorExtension/EditorStyles")]
+		[MenuItem("EditorExtension/编辑器辅助开发工具/EditorStyles")]
 		public static void ShowEditorStyles()
 		{
 			EditorWindow.GetWindow<EditorStylesWindow>("EditorStyles").Show();
