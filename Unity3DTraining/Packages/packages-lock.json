@@ -1,5 +1,11 @@
 {
   "dependencies": {
+    "com.unity.2d.sprite": {
+      "version": "1.0.0",
+      "depth": 0,
+      "source": "builtin",
+      "dependencies": {}
+    },
     "com.unity.2d.tilemap": {
       "version": "1.0.0",
       "depth": 0,
@@ -36,6 +42,13 @@
       "dependencies": {},
       "url": "https://packages.unity.com"
     },
+    "com.unity.playablegraph-visualizer": {
+      "version": "https://github.com/needle-mirror/com.unity.playablegraph-visualizer.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {},
+      "hash": "84d4f290369f2e939b36fe364cecd17bd8a8b97b"
+    },
     "com.unity.test-framework": {
       "version": "1.1.16",
       "depth": 0,
@@ -57,7 +70,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.timeline": {
-      "version": "1.2.15",
+      "version": "1.2.17",
       "depth": 0,
       "source": "registry",
       "dependencies": {},
