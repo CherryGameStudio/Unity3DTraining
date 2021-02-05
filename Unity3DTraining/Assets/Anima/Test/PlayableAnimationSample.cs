@@ -8,7 +8,8 @@ namespace Animation.Playables
     public class PlayableAnimationSample : MonoBehaviour
     {
 		private AnimationClip m_Clip;
-		private AnimationClip[] m_LoopClips;
+        [SerializeField]
+		public AnimationClip[] m_LoopClips = null;
 
 		// Start is called before the first frame update
 		void Start()
