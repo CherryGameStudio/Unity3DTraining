@@ -57,10 +57,10 @@ public class Test_AboutCollection : MonoBehaviour
 		{
 			Debug.Log(item);
 
-			//编译器不允许在foreach语句中对迭代变量(item)赋值
+			//编译器不允许对迭代变量赋值。
 			//item = "zyf";
 
-			//在循环期间对集合进行修改，重新访问枚举数就会报错，指出枚举数实例化之后，集合已发生改变。
+			//编译阶段不报错，但是运行时会报错，不允许迭代时更改集合。
 			//m_List.Add("zyf");
 		}
 
@@ -110,6 +110,18 @@ public class Test_AboutCollection : MonoBehaviour
 		{
 			Debug.Log(item);
 		}
+
+		IteratorSample3 sample3 = new IteratorSample3();
+		foreach (var item in sample3)
+		{
+			Debug.Log(item);
+		}
+
+		IteratorSample3plus sample3plus = new IteratorSample3plus();
+		foreach (var item in sample3plus)
+		{
+			Debug.Log(item);
+		}
 	}
 }
 
@@ -130,6 +142,44 @@ public class IteratorSample : IEnumerable<string>
 	IEnumerator IEnumerable.GetEnumerator()
 	{
 		return GetEnumerator();
+	}
+}
+
+public class IteratorSampleplus : IEnumerable<string>
+{
+	public IEnumerator<string> GetEnumerator()
+	{
+		yield return "z";
+		yield return "y";
+		yield return "f";
+		yield return "zyf";
+	}
+
+	IEnumerator IEnumerable.GetEnumerator()
+	{
+		return GetEnumerator();
+	}
+
+	private sealed class Enumerator : IEnumerator<string>
+	{
+		public string Current => throw new NotImplementedException();
+
+		object IEnumerator.Current => throw new NotImplementedException();
+
+		public void Dispose()
+		{
+			Debug.Log("Dispose");
+		}
+
+		public bool MoveNext()
+		{
+			throw new NotImplementedException();
+		}
+
+		public void Reset()
+		{
+			throw new NotImplementedException();
+		}
 	}
 }
 
@@ -237,4 +287,76 @@ public class IteratorSample2plus<T> : IEnumerable<T>
 		}
 	}
 }
+
+public class IteratorSample3 : IEnumerable
+{
+	public IEnumerator GetEnumerator()
+	{
+		for (int i = 0; i < 10; i++)
+		{
+			yield return i;
+		}
+	}
+}
+
+public class IteratorSample3plus : IEnumerable
+{
+	public IEnumerator GetEnumerator()
+	{
+		return new Enumerator(0);
+	}
+
+	private sealed class Enumerator : IEnumerator
+	{
+		private int state;
+		private int current;
+		public int tempValue;
+
+		public object Current
+		{
+			get { return current; }
+		}
+
+		public Enumerator(int state)
+		{
+			this.state = state;
+		}
+
+		public bool MoveNext()
+		{
+			switch (state)
+			{
+				case 0:
+					state = -1;
+					tempValue = 0;
+
+					Go:
+					if (state != -1)
+					{
+						state = -1;
+						tempValue++;
+					}
+
+					while (tempValue < 10)
+					{
+						current = tempValue;
+						state = 1;
+						return true;
+					}
+
+					break;
+				case 1:
+					goto Go;
+			}
+
+			return false;
+		}
+
+		public void Reset()
+		{
+			throw new NotImplementedException();
+		}
+	}
+}
+
 #endregion
